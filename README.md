@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Collaborative Candidate Notes
 
 A real-time collaborative application for recruiters and hiring managers to share candidate feedback and receive tag-based notifications.
@@ -221,6 +222,10 @@ If given more time, I would implement:
 
 ##  Support  https://github.com/saikumardeveloper9948
 
+=======
+# collaborative-notes
+REACT
+>>>>>>> e6555d61abc6be4f030d939f004724b224c52ee8
 =======
 # collaborative-notes
 REACT
