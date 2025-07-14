@@ -1,0 +1,9 @@
+node_modules
+
+
+.env
+
+git pull origin main --allow-unrelated-histories
+git add .
+git commit -m "Your commit message"
+git push origin main
