@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { useToast } from '../contexts/ToastContext';
+import useToast from '../contexts/useToast';
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -26,7 +27,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch(`${apiUrl}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -112,7 +113,7 @@ const Login = () => {
           width="100%"
           height="100%"
           preserveAspectRatio="none"
-          className="w-full h-full"cd 
+          className="w-full h-full"cd = "true"
           xmlns="http://www.w3.org/2000/svg"
         >
           <defs>

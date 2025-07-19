@@ -1,9 +1,7 @@
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 import { toast } from 'react-toastify';
 
 const ToastContext = createContext();
-
-export const useToast = () => useContext(ToastContext);
 
 export const ToastProvider = ({ children }) => {
   const showToast = (message, type = 'default') => {

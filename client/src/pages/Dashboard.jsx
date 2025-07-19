@@ -1,7 +1,8 @@
 import { useCallback, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { useToast } from '../contexts/ToastContext';
+import useToast from '../contexts/useToast';
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
@@ -14,7 +15,7 @@ const Dashboard = () => {
 
   const fetchCandidates = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/candidates', {
+      const response = await fetch(`${apiUrl}/api/candidates`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
@@ -40,7 +41,7 @@ const Dashboard = () => {
 
   const fetchNotifications = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/notifications', {
+      const response = await fetch(`${apiUrl}/api/notifications`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
@@ -70,7 +71,7 @@ const Dashboard = () => {
   const handleCreateCandidate = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/api/candidates', {
+      const response = await fetch(`${apiUrl}/api/candidates`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,

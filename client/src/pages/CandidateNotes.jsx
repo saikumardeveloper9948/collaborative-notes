@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import { useAuth } from '../contexts/AuthContext';
-import { useToast } from '../contexts/ToastContext';
+import useToast from '../contexts/useToast';
 
 const CandidateNotes = () => {
   const { id } = useParams();
@@ -20,10 +20,11 @@ const CandidateNotes = () => {
   const socketRef = useRef(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const fetchCandidate = useCallback(async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/candidates/${id}`, {
+      const response = await fetch(`${apiUrl}/api/candidates/${id}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
@@ -37,12 +38,12 @@ const CandidateNotes = () => {
     } catch {
       showToast('Error fetching candidate details', 'error');
     }
-  }, [id, showToast]);
+  }, [id, showToast, apiUrl]);
 
   const fetchNotes = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/notes/candidate/${id}`, {
+      const response = await fetch(`${apiUrl}/api/notes/candidate/${id}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
@@ -60,11 +61,11 @@ const CandidateNotes = () => {
     } finally {
       setLoading(false);
     }
-  }, [id]);
+  }, [id, apiUrl]);
 
   const fetchUsers = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/users', {
+      const response = await fetch(`${apiUrl}/api/users`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
@@ -78,10 +79,10 @@ const CandidateNotes = () => {
     } catch (error) {
       console.error('Error fetching users:', error);
     }
-  }, []);
+  }, [apiUrl]);
 
   const initializeSocket = useCallback(() => {
-    const newSocket = io('http://localhost:5000', {
+    const newSocket = io(`${apiUrl}`, {
       auth: {
         token: localStorage.getItem('token')
       },
@@ -119,7 +120,7 @@ const CandidateNotes = () => {
     });
 
     socketRef.current = newSocket;
-  }, [id, user.id, showToast]);
+  }, [id, user.id, showToast, apiUrl]);
 
   useEffect(() => {
     fetchCandidate();
@@ -176,7 +177,7 @@ const CandidateNotes = () => {
     if (!newNote.trim()) return;
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/api/notes', {
+      const response = await fetch(`${apiUrl}/api/notes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
