@@ -33,11 +33,24 @@ const io = socketIo(server, {
 const noteSocket = new NoteSocket(io);
 noteSocket.initialize();
 
+const allowedOrigins = [
+  process.env.CLIENT_URL,           // deployed frontend
+  "http://localhost:5173",          // local frontend
+  "http://localhost:5174",          // (optional, if you use this port)
+  "http://localhost:3000"           // (optional, if you use this port)
+];
+
 // Middleware
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? process.env.CLIENT_URL 
-    : ["http://localhost:5173", "http://localhost:5174", "http://localhost:3000"],
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));
